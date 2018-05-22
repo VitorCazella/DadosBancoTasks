@@ -1,19 +1,18 @@
 package main;
 
-import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import model.Aluno;
 import tools.DBConnection;
 import tools.Menu;
 
 public class DadosBancoTasks {
 	
-	public static List<String> opsMenuPrincipal = Arrays.asList("Listar Alunos", "Inserir Aluno");
+	public static List<String> opsMenuPrincipal = Arrays.asList("Listar Alunos", "Inserir Aluno", "Busca por Matricula");
 	
 	public static int numMenu = 0;
-	private static Connection conn = null;
 
 	public static Scanner scan = new Scanner(System.in);
 
@@ -29,8 +28,13 @@ public class DadosBancoTasks {
 				break;
 				
 			case 1:
+				inserirAluno();
 				break;
 				
+			case 2:
+				buscaPorMatric();
+				break;
+			
 			default:
 				break;
 			}
@@ -44,6 +48,21 @@ public class DadosBancoTasks {
 	public static void listarAlunos() {
 		DBConnection conn = new DBConnection();
 		conn.executeSQL("select a.nome, a.email, a.datanasci from Alunos a");
+	}
+	
+	public static void inserirAluno() {
+		Aluno al = new Aluno();
+		if(al != null) {
+			al.create();
+		}
+	}
+	
+	public static void buscaPorMatric() {
+		long mat = 0;
+		System.out.println("Digite a matricula do aluno: ");
+		mat = Menu.scan.nextLong();
+		Aluno al = new Aluno(mat);
+		al.mostraDados();
 	}
 	
 	public static void limpaTela() {
